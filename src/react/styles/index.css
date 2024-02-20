@@ -4,9 +4,7 @@ body, html, #root {
   height: 100%;
   width: 100%;
   overflow: hidden;
-
 }
-
 
 .panel-viewport {
   height: 100vh;
@@ -26,9 +24,6 @@ body, html, #root {
   overflow: auto;
   box-sizing: border-box;
   text-align: left;
-  position: absolute;
-  bottom: 0; /* Align to the bottom */
-  right: 0;
 }
 
 #horizontal-panel-container {
