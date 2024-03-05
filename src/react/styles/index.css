@@ -81,6 +81,9 @@ body, html, #root {
   z-index: 10;
 }
 
+.highlight {
+  background-color: #ffff007f;
+}
 
 .resize-bar-vertical {
   width: 5px;
