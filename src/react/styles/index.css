@@ -25,7 +25,7 @@ body, html, #root {
   min-height: 0;
 }
 
-#panel-viewport > div {
+#panel-viewport > * {
   display: flex;
   height: 100%;
 }
@@ -35,6 +35,10 @@ body, html, #root {
   flex-direction: column;
   overflow: auto;
   text-align: left;
+}
+
+#text-input-panel > * {
+  margin: auto;
 }
 
 .highlight {
