@@ -90,13 +90,13 @@ export const initialSettings: Settings = {
     panels: {
         textInputPanel: {
             appearance: {
-                fontSize: '16px',
+                fontSize: '14px',
                 theme: 'light',
             }
         },
         readerPanel: {
             appearance: {
-                fontSize: '64px',
+                fontSize: '36px',
                 theme: 'light',
             }
         },
