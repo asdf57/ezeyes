@@ -110,10 +110,10 @@ export const PanelProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [wordIndices, setWordIndices] = useState<number[]>(defaultContextValue.wordIndices);
 
   const { settings } = useContext(SettingsContext);
-  const speed = 1000 / (settings.panels.wpm.curWpm / 60);
-
+  const [lastWordSequenceLength, setLastWordSequenceLength] = useState(settings.processing.wordSequenceLength);
 
   const currentTextContentRef = useRef('');
+  const lastWordSequenceLengthRef = useRef(settings.processing.wordSequenceLength);
 
     /**
    * Generates a list of word sequences relative to the current index into the text content.
@@ -205,14 +205,33 @@ export const PanelProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     //If we custom navigated elsewhere
     const isCustomNavigation = curWordSequenceIndex !== prevWordSequenceIndex && curWordSequenceIndex !== nextWordSequenceIndex;
 
-    //Cache solution (drastically improves speeds by x100)
-    if (!isCustomNavigation) {
+    const shouldRecalculate = curWordSequenceIndex !== prevWordSequenceIndex && 
+                              curWordSequenceIndex !== nextWordSequenceIndex ||
+                              settings.processing.wordSequenceLength !== lastWordSequenceLengthRef.current;
+
+    if (shouldRecalculate) {
+      newWordSequenceIndices = generateWordSequenceIndicesFromIndex(
+        words, textContent, curWordSequenceIndex, settings.processing.wordSequenceLength
+      );
+      setWordSequenceIndices(newWordSequenceIndices);
+      lastWordSequenceLengthRef.current = settings.processing.wordSequenceLength;
+    } else {
+      // Log for debugging purposes; you may remove this in production.
+      console.log('Using cached word sequence indices.');
       newWordSequenceIndices = wordSequenceIndices;
       setWordSequenceIndices([...newWordSequenceIndices]);
-    } else {
-      newWordSequenceIndices = generateWordSequenceIndicesFromIndex(words, textContent, curWordSequenceIndex, settings.panels.wordSequenceLength);
-      setWordSequenceIndices(newWordSequenceIndices);
     }
+
+    //Cache solution (drastically improves speeds by x100)
+    // if (!isCustomNavigation && settings.processing.wordSequenceLength === lastWordSequenceLength) {
+    //   console.log('cached')
+    //   newWordSequenceIndices = wordSequenceIndices;
+    //   setWordSequenceIndices([...newWordSequenceIndices]);
+    // } else {
+    //   console.log('uncached')
+    //   newWordSequenceIndices = generateWordSequenceIndicesFromIndex(words, textContent, curWordSequenceIndex, settings.processing.wordSequenceLength);
+    //   setWordSequenceIndices(newWordSequenceIndices);
+    // }
 
     //Set relative word sequence indices
     setPrevWordSequenceIndex(Math.max(getLargestLesserValue(newWordSequenceIndices, curWordSequenceIndex), newWordSequenceIndices[0]));
@@ -269,7 +288,7 @@ export const PanelProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         }
       });
   
-      newWordSequenceIndices = generateWordSequenceIndicesFromIndex(words, textContent, 0, settings.panels.wordSequenceLength);
+      newWordSequenceIndices = generateWordSequenceIndicesFromIndex(words, textContent, 0, settings.processing.wordSequenceLength);
   
       setSentenceIndices(newSentenceIndices);
       setParagraphIndices(newParagraphIndices);
@@ -363,7 +382,7 @@ export const PanelProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     useEffect(() => {
       //Update indices
       calculateIndicesOnUpdate();
-    }, [curWordSequenceIndex]); 
+    }, [curWordSequenceIndex, settings.processing.wordSequenceLength]);
 
   return (
     <PanelContext.Provider value={getContextValue()}>

@@ -44,13 +44,16 @@ const PanelViewport: React.FC = () => {
                 <Flex justifyContent="center" width="100%">
                     <ButtonGroup justifySelf="center" alignSelf="center" align="center" margin="size-100">
                         <Button variant="secondary" onPress={navigateBackward}>
-                            <ChevronDoubleLeft />
+                            <ChevronDoubleLeft UNSAFE_style={{padding: '17px 27px'}}/>
                         </Button>
                         <Button variant="secondary" onPress={togglePlayPause} autoFocus>
-                            {isPlaying ? <Pause /> : <Play />}
+                            {isPlaying 
+                            ? <Pause size='XXL' UNSAFE_style={{padding: '17px 27px'}}/>
+                            : <Play size='XXL' UNSAFE_style={{padding: '17px 27px'}}/>
+                            }
                         </Button>
                         <Button variant="secondary" onPress={navigateForward} autoFocus>
-                            <ChevronDoubleRight />
+                            <ChevronDoubleRight UNSAFE_style={{padding: '17px 27px'}}/>
                         </Button>
                     </ButtonGroup>
                 </Flex>

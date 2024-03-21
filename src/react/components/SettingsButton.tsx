@@ -8,8 +8,14 @@ function SettingsButton() {
     const { openMenu } = useMenuManager();
 
     return (
-        <Button variant="secondary" onPress={() => openMenu(MenuType.SETTINGS)}>
-            <SettingsIcon />
+        <Button
+            variant="secondary"
+            onPress={() => openMenu(MenuType.SETTINGS)}
+            UNSAFE_style={{
+                padding: '17px 27px'
+            }}
+        >
+            <SettingsIcon size='XXL'/>
         </Button>
     );
 }

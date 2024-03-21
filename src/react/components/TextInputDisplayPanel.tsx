@@ -1,12 +1,23 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, CSSProperties } from 'react';
 import { PanelContext } from '../contexts/PanelContext';
+import { SettingsContext } from '../contexts/SettingsContext';
 import { View, Text } from '@adobe/react-spectrum';
 
+interface TextInputProps {
+  style?: CSSProperties;
+}
 
-const TextInputDisplayPanel: React.FC<{ style?: React.CSSProperties }> = ({ style }) => {
+const TextInputDisplayPanel: React.FC<TextInputProps> = ({ style }) => {
   const { setCurWordSequenceIndex, setTextContent, curWordSequenceIndex, wordIndices, paragraphIndices, textContent, nextWordSequenceIndex} = useContext(PanelContext);
   const [renderHtml, setRenderHtml] = useState<React.JSX.Element[]>([]);
   const [highlightTrigger, setHighlightTrigger] = useState(0);
+  const { settings } = useContext(SettingsContext); 
+
+  if (style == null) {
+    style = { 'fontSize': settings.textInputPanel.fontSize } as React.CSSProperties
+  } else if (style.fontSize == null) {
+    style['fontSize'] = settings.textInputPanel.fontSize;
+  }
 
   const triggerHighlightUpdate = () => {
     setHighlightTrigger(prev => prev + 1);

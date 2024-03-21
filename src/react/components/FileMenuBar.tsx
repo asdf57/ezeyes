@@ -27,7 +27,7 @@ function FileMenuBar() {
     return (
         <Flex gap="size-100" position={'absolute'} zIndex={1000}>
         <MenuTrigger>
-            <ActionButton>
+            <ActionButton width="size-900" height="size-600">
                 File
             </ActionButton>
             <Menu onAction={(key) => processOptions(key)}>
@@ -39,7 +39,6 @@ function FileMenuBar() {
                     </Menu>
                 </SubmenuTrigger>
                 <Item key="reset">Reset Preferences</Item>
-                <Item key="toggle-dark-mode">Toggle Dark Mode</Item>
             </Menu>
         </MenuTrigger>
         </Flex>

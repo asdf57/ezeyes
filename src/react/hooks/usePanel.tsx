@@ -67,7 +67,7 @@ export const usePanel = () => {
   ]);
 
   const { settings } = useContext(SettingsContext);
-  const speed = 1000 / (settings.panels.wpm.curWpm / 60);
+  const speed = 1000 / (settings.processing.wpm[settings.processing.wpm.type].current / 60);
 
   const navigateForward = () => {
     if (curWordSequenceIndexRef.current < wordSequenceIndicesRef.current[wordSequenceIndicesRef.current.length - 1])

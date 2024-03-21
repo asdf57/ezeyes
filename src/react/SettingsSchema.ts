@@ -1,117 +1,147 @@
 export enum PanelDisplayType {
-    HORIZONTAL,
-    VERTICAL,
-    ZOOM,
-    FLASHCARD
+    HORIZONTAL = "horizontal",
+    VERTICAL = "vertical",
+    ZOOM = "zoom",
+    FLASHCARD = "flashcard",
+}
+
+export enum WPMType {
+    NORMAL = "normal",
+    ASSISTED = "assisted",
+}
+
+export enum ThemeType {
+    LIGHT = "light",
+    DARK = "dark",
+};
+
+export enum UISize {
+    MEDIUM = "medium",
+    LARGE = "large",
 }
 
 export interface Keybindings {
     play: string;
-    pause: string;
     nextWord: string;
     prevWord: string;
     openSettings: string;
     switchView: string;
-    focus: string;
-    select: string;
     importFile: string;
     prevParagraph: string;
     nextParagraph: string;
     prevSentence: string;
     nextSentence: string;
     flipFlashcard: string;
+    backToTop: string;
 }
 
-// Define the appearance interface
-export interface Appearance {
-    fontSize: string;
-    theme: string;
+export interface TextInputPanelSettings {
+    fontSize: number;
+}
+
+export interface ReaderPanelSettings {
+    fontSize: number;
 }
 
 // Define the panel interface
 export interface Panel {
-    textInputPanel: {
-        appearance: Appearance;
-    };
-    readerPanel: {
-        appearance: Appearance;
-    };
+    textInputPanel: TextInputPanelSettings;
+    readerPanel: ReaderPanelSettings;
 }
 
 // Define the WPM range interface
 export interface WpmRange {
     min: number;
     max: number;
+    current: number;
 }
 
 // Define the WPM settings interface
 export interface WpmSettings {
-    curWpm: number;
-    slowWpm: WpmRange;
-    fastWpm: WpmRange;
+    type: WPMType;
+    assisted: WpmRange;
+    normal: WpmRange;
 }
 
-// Define the panels settings interface
-export interface Panels {
-    textInputPanel: {
-        appearance: Appearance;
-    };
-    readerPanel: {
-        appearance: Appearance;
-    };
+export interface UI {
+    size: UISize;
+    defaultDisplayType: PanelDisplayType;
+    theme: ThemeType;
+    blur: number;
+    brightness: number;
+    contrast: number;
+    grayscale: number;
+    hueRotate: number;
+    invert: number;
+    opacity: number;
+    saturate: number;
+    sepia: number;
+    overlayColor: string;
+}
+
+export interface Processing {
     wpm: WpmSettings;
     wordSequenceLength: number;
-    displayType: PanelDisplayType;
 }
 
-// Define the settings interface
 export interface Settings {
+    processing: Processing;
+    ui: UI;
+    textInputPanel: TextInputPanelSettings;
+    readerPanel: ReaderPanelSettings;
     keybindings: Keybindings;
-    panels: Panels;
 }
 
 export const initialSettings: Settings = {
+    processing: {
+        wpm: {
+            type: WPMType.NORMAL,
+            assisted: {
+                min: 10,
+                max: 100,
+                current: 50,
+            },
+            normal: {
+                min: 100,
+                max: 700,
+                current: 300,
+            }
+        },
+        wordSequenceLength: 1,
+    },
+    ui: {
+        size: UISize.MEDIUM,
+        defaultDisplayType: PanelDisplayType.ZOOM,
+        theme: ThemeType.DARK,
+        blur: 0,
+        brightness: 1,
+        contrast: 1,
+        grayscale: 0,
+        hueRotate: 0,
+        invert: 0,
+        opacity: 1,
+        saturate: 1,
+        sepia: 0,
+        overlayColor: '#ff00ff00',
+    },
+    textInputPanel: {
+        fontSize: 16,
+    },
+    readerPanel: {
+        fontSize: 36,
+    },
     keybindings: {
         play: 'space',
-        pause: 'space',
         nextWord: 'right',
         prevWord: 'left',
         openSettings: 'ctrl+o',
         switchView: 'p',
-        focus: 'tab',
-        select: 'enter',
         importFile: 'ctrl+i',
         prevParagraph: "q",
         nextParagraph: "w",
         prevSentence: "a",
         nextSentence: "s",
-        flipFlashcard: "f"
-    },
-    panels: {
-        textInputPanel: {
-            appearance: {
-                fontSize: '16px',
-                theme: 'light',
-            }
-        },
-        readerPanel: {
-            appearance: {
-                fontSize: '64px',
-                theme: 'light',
-            }
-        },
-        wpm: {
-            curWpm: 120,
-            slowWpm: {
-                min: 10,
-                max: 100,
-            },
-            fastWpm: {
-                min: 100,
-                max: 700,
-            }
-        },
-        wordSequenceLength: 4,
-        displayType: PanelDisplayType.ZOOM,
+        flipFlashcard: "f",
+        backToTop: "v",
     },
 };

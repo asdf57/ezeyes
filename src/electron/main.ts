@@ -37,6 +37,9 @@ const createWindow = (): void => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
+//Set to disable Electron from overriding custom themes
+nativeTheme.themeSource = 'light';
+
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
@@ -107,15 +110,6 @@ ipcMain.handle('spawn-file-dialog', async (_) => {
     console.log(error);
     return undefined;
   }
-});
-
-ipcMain.handle('dark-mode:toggle', () => {
-  if (nativeTheme.shouldUseDarkColors) {
-    nativeTheme.themeSource = 'light';
-  } else {
-    nativeTheme.themeSource = 'dark';
-  }
-  return nativeTheme.shouldUseDarkColors;
 });
 
 // In this file you can include the rest of your app's specific main process
